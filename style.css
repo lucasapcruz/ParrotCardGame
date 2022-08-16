@@ -13,3 +13,24 @@ h1{
     display: flex;
     justify-content: center;
 }
+.deck{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 1057px;
+}
+.card{
+    background-color: #A7E9AF;
+    width: 117px;
+    height: 146px;
+    border-radius: 5px;
+    margin: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.face-down img{
+    height: 100px;
+}
