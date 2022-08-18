@@ -11,8 +11,8 @@ const lsOfCards = [
 ];
 let lsOfSelectedCards;
 
-while((numberOfCards < 4) || (numberOfCards%2 !== 0)){
-    numberOfCards = prompt("Número de cartas inválido. Com quantas cartas quer jogar?");
+while((numberOfCards < 4) || (numberOfCards > 14) || (numberOfCards%2 !== 0)){
+    numberOfCards = prompt("Número de cartas inválido. Escolha um número entre 4 e 14 cartas:");
 }
 
 lsOfSelectedCards = lsOfCards.slice(0,(numberOfCards/2));
@@ -52,7 +52,7 @@ function selectCard(element){
             verifyMatchingCards(pairForComparison)
         }
     }
-    setTimeout('verifyWin()', 600);
+    setTimeout('verifyWin()', 700);
 }
 
 function verifyMatchingCards(pair){

@@ -7,11 +7,16 @@ h1{
     font-weight: 700;
     font-size: 56px;
     color:#75B79E;
+    text-align: center;
+    line-height: 66px;
     margin-top: 40px;
+    margin-bottom: 30px;
 }
 .header{
     display: flex;
     justify-content: center;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 .deck{
     display: flex;
@@ -19,7 +24,7 @@ h1{
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    /* max-width: 1057px; */
+    max-width: 1057px;
 }
 .card{
     width: 117px;
@@ -53,4 +58,14 @@ h1{
 
 .selected .back-face {
     transform: rotateY(0deg);
+}
+
+@media(max-width:375px){
+    h1{
+        font-size: 36px;
+        line-height: 42px;
+    }
+    .deck{
+        flex-direction: column;
+    }
 }
