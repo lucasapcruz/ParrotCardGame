@@ -1,80 +1,116 @@
-let numberOfCards = prompt("Com quantas cartas quer jogar?");
+let numOfMoves;
+let numberOfCards;
+let timeCounter;
+let interval;
 
-const lsOfCards = [
-    "bobrossparrot",
-    "explodyparrot",
-    "fiestaparrot",
-    "metalparrot",
-    "revertitparrot",
-    "tripletsparrot",
-    "unicornparrot"
-];
-let lsOfSelectedCards;
+startNewGame();
 
-while((numberOfCards < 4) || (numberOfCards > 14) || (numberOfCards%2 !== 0)){
-    numberOfCards = prompt("Número de cartas inválido. Escolha um número par de cartas, entre 4 e 14:");
+function promptUserForNmCards(){
+    
+    userResponse = prompt("Com quantas cartas quer jogar?");
+
+    while ((userResponse < 4) || (userResponse > 14) || (userResponse % 2 !== 0)) {
+        userResponse = prompt("Número de cartas inválido. Escolha um número par de cartas, entre 4 e 14:");
+    }
+
+    return userResponse;
 }
 
-lsOfSelectedCards = lsOfCards.slice(0,(numberOfCards/2));
-lsOfSelectedCards = lsOfSelectedCards.concat(lsOfSelectedCards);
-lsOfSelectedCards.sort(comparator);
 
-const deckElm = document.querySelector(".deck");
+function startNewGame() {
 
-for(let i=0; i < lsOfSelectedCards.length; i++){
-    deckElm.innerHTML = deckElm.innerHTML +
-    `<div class="card" onclick="selectCard(this)">
+    timeCounter = 0;
+
+    interval = setInterval(timer,1000);
+
+    numberOfCards = promptUserForNmCards();
+    
+    numOfMoves = 0;
+    
+    const lsOfCards = [
+        "bobrossparrot",
+        "explodyparrot",
+        "fiestaparrot",
+        "metalparrot",
+        "revertitparrot",
+        "tripletsparrot",
+        "unicornparrot"
+    ];
+
+    let lsOfSelectedCards;
+
+    lsOfSelectedCards = lsOfCards.slice(0, (numberOfCards / 2));
+    lsOfSelectedCards = lsOfSelectedCards.concat(lsOfSelectedCards);
+    lsOfSelectedCards.sort(comparator);
+
+    const deckElm = document.querySelector(".deck");
+
+    for (let i = 0; i < lsOfSelectedCards.length; i++) {
+        deckElm.innerHTML = deckElm.innerHTML +
+            `<div class="card" onclick="selectCard(this)">
         <div class="face front-face"><img src="img/front.png"></div>
         <div class="face back-face"><img src="img/${lsOfSelectedCards[i]}.gif"></div>
      </div>`;
 
+    }
 }
 
-let numOfMoves = 0;
-let pairForComparison = [];
-const lsOfCardElements = document.querySelectorAll(".card");
-
-
-function comparator() { 
-	return Math.random() - 0.5; 
+function comparator() {
+    return Math.random() - 0.5;
 }
 
-function selectCard(element){
-    if(!element.classList.contains("selected")){
-        if(pairForComparison.length<2){
-            element.classList.add("selected");
-            numOfMoves++
-            const iCard = Array.from(lsOfCardElements).indexOf(element);
-            pairForComparison.push(iCard);
-            console.log(pairForComparison)
-        }
-        if(pairForComparison.length == 2){
-            verifyMatchingCards(pairForComparison)
+
+function selectCard(element) {
+    let selectedCards = document.querySelectorAll(".comparing");
+    console.log(selectedCards);
+
+    if (selectedCards.length < 2) {
+        element.classList.toggle("comparing");
+        numOfMoves++
+        selectedCards = document.querySelectorAll(".comparing");
+        if (selectedCards.length == 2) {
+            verifyMatchingCards(selectedCards);
         }
     }
-    setTimeout('verifyWin()', 700);
 }
 
-function verifyMatchingCards(pair){
-    const card1 = lsOfSelectedCards[pair[0]];
-    const card2 = lsOfSelectedCards[pair[1]];
-    
-    if(card1 !== card2){
-        setTimeout(function(){
-                lsOfCardElements[pair[0]].classList.remove("selected");
-                lsOfCardElements[pair[1]].classList.remove("selected");
-            }, 1000);
+function verifyMatchingCards(selectedCards) {
+    const card1 = selectedCards[0].querySelector(".back-face img").getAttribute("src");
+    const card2 = selectedCards[1].querySelector(".back-face img").getAttribute("src");
+
+    if (card1 !== card2) {
+        setTimeout(function () {
+            selectedCards[0].classList.toggle("comparing");
+            selectedCards[1].classList.toggle("comparing");
+        }, 1000)
+    } else {
+        selectedCards[0].classList.add("selected");
+        selectedCards[0].classList.remove("comparing");
+        selectedCards[1].classList.add("selected");
+        selectedCards[1].classList.remove("comparing");
+        setTimeout(verifyWin, 550);
     }
-    
-    pairForComparison = [];
-
 }
 
-function verifyWin(){
-    
+
+function verifyWin() {
     const matchedCards = document.querySelectorAll(".selected");
-    
-    if(matchedCards.length == numberOfCards){
-        alert(`Você ganhou em ${numOfMoves} jogadas!`)
+
+    if (matchedCards.length == numberOfCards) {
+        alert(`Você ganhou em ${numOfMoves} jogadas! \n Tempo total de jogo: ${timeCounter} segundos.`)
+        let newGame = prompt("Deseja jogar novamente?");
+        while(newGame !== "sim" && newGame !== "não"){
+            newGame = prompt("Desculpe, não entendi. Deseja jogar novamente? Digite 'sim' ou 'não'.")
+        }
+        if(newGame == "sim"){
+            startNewGame();
+        }else{
+            clearInterval(interval);
+        }
     }
+}
+
+function timer(){
+    timeCounter++
+    document.querySelector(".timer p").innerHTML = `${timeCounter} s`
 }
