@@ -19,6 +19,10 @@ function promptUserForNmCards(){
 
 function startNewGame() {
 
+    const deckElm = document.querySelector(".deck");
+
+    deckElm.innerHTML = "";
+
     timeCounter = 0;
 
     interval = setInterval(timer,1000);
@@ -26,10 +30,6 @@ function startNewGame() {
     numberOfCards = promptUserForNmCards();
     
     numOfMoves = 0;
-
-    const deckElm = document.querySelector(".deck");
-
-    deckElm.innerHTML = "";
     
     const lsOfCards = [
         "bobrossparrot",
