@@ -26,6 +26,10 @@ function startNewGame() {
     numberOfCards = promptUserForNmCards();
     
     numOfMoves = 0;
+
+    const deckElm = document.querySelector(".deck");
+
+    deckElm.innerHTML = "";
     
     const lsOfCards = [
         "bobrossparrot",
@@ -42,8 +46,6 @@ function startNewGame() {
     lsOfSelectedCards = lsOfCards.slice(0, (numberOfCards / 2));
     lsOfSelectedCards = lsOfSelectedCards.concat(lsOfSelectedCards);
     lsOfSelectedCards.sort(comparator);
-
-    const deckElm = document.querySelector(".deck");
 
     for (let i = 0; i < lsOfSelectedCards.length; i++) {
         deckElm.innerHTML = deckElm.innerHTML +
